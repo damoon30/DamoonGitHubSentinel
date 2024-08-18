@@ -1,6 +1,7 @@
 # src/command_handler.py
 
 import argparse
+from logger import LOG
 
 class CommandHandler:
     def __init__(self, github_client, subscription_manager, report_generator):
@@ -48,6 +49,7 @@ class CommandHandler:
     def add_subscription(self, args):
         self.subscription_manager.add_subscription(args.repo)
         print(f"Added subscription for repository: {args.repo}")
+        LOG.info("Added subscription for repository:" + args.repo)
 
     def remove_subscription(self, args):
         self.subscription_manager.remove_subscription(args.repo)

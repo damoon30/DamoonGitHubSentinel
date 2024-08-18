@@ -5,7 +5,8 @@ from logger import LOG
 
 class GitHubClient:
     def __init__(self, token):
-        self.token = token
+        self.token = os.getenv("GITHUB_TOKEN")
+        LOG.info("GITHUB_TOKEN: " + self.token)
         self.headers = {'Authorization': f'token {self.token}'}
 
     def fetch_updates(self, repo, since=None, until=None):
