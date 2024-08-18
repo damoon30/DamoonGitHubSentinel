@@ -1,7 +1,11 @@
 # src/command_handler.py
 
 import argparse
+import os
+
 from logger import LOG
+from config import read_md_file
+from datetime import datetime, date, timedelta
 
 class CommandHandler:
     def __init__(self, github_client, subscription_manager, report_generator):
@@ -38,7 +42,8 @@ class CommandHandler:
         parser_export_range.set_defaults(func=self.export_progress_by_date_range)
 
         parser_generate = subparsers.add_parser('generate', help='Generate daily report from markdown file')
-        parser_generate.add_argument('file', type=str, help='The markdown file to generate report from')
+        parser_generate.add_argument('repo', type=str, help='The repository to subscribe to (e.g., owner/repo)')
+        parser_generate.add_argument('date', type=str, help='file name for md report')
         parser_generate.set_defaults(func=self.generate_daily_report)
 
         parser_help = subparsers.add_parser('help', help='Show help message')
@@ -70,8 +75,16 @@ class CommandHandler:
         print(f"Exported progress for the last {args.days} days for repository: {args.repo}")
 
     def generate_daily_report(self, args):
-        self.report_generator.generate_daily_report(args.file)
-        print(f"Generated daily report from file: {args.file}")
+        # 根据
+        # today = datetime.now().date().isoformat()
+        # updates = self.github_client.fetch_updates(args.repo, since=today)
+        # print(updates)
+        # 获取repo下载的文件地址
+        repo_dir = os.path.join('daily_progress', args.repo.replace("/", "_"))
+        file_path = os.path.join(repo_dir, f'{args.date}.md')
+
+        self.report_generator.generate_daily_report(file_path)
+        print(f"Generated daily report from file: {args.repo}")
 
     def print_help(self, args=None):
         self.parser.print_help()

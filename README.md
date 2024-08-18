@@ -24,6 +24,11 @@ python3 -m venv venv
 source venv/bin/activate
 
 pip install -r requirements.txt
+
+vim ~/.bash_profile
+export OPENAI_API_BASE=xx
+export OPENAI_API_KEY=xx
+source  ~/.bash_profile
 ```
 
 ### 2. 配置应用

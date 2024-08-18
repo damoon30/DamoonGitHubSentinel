@@ -6,7 +6,7 @@ from logger import LOG
 
 class LLM:
     def __init__(self):
-        self.client = OpenAI()
+        self.client = OpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
         LOG.add("daily_progress/llm_logs.log", rotation="1 MB", level="DEBUG")
 
     def generate_daily_report(self, markdown_content, dry_run=False):
@@ -19,7 +19,7 @@ class LLM:
             LOG.debug("Prompt saved to daily_progress/prompt.txt")
             return "DRY RUN"
 
-        LOG.info("Starting report generation using GPT model.")
+        LOG.info(f"Starting report generation using GPT model. prompt={prompt}")
         
         try:
             response = self.client.chat.completions.create(
