@@ -1,5 +1,6 @@
 import json
 import os
+from logger import LOG
 
 
 def read_md_file(file_path):
@@ -34,7 +35,8 @@ class Config:
         self.load_config()
     
     def load_config(self):
-        with open('config.json', 'r') as f:
+        LOG.info(f"目录{os.getcwd()}")
+        with open('config/config.json', 'r') as f:
             config = json.load(f)
             self.github_token = config.get('github_token')
             self.notification_settings = config.get('notification_settings')
@@ -44,9 +46,9 @@ class Config:
     import os
 
     # 示例使用
-    file_path = "/path/to/your/file.md"
-    content = read_md_file(file_path)
-    if content:
-        print("File Content:")
-        print(content)
+    # file_path = "/path/to/your/file.md"
+    # content = read_md_file(file_path)
+    # if content:
+        # print("File Content:")
+        # print(content)
 

@@ -11,7 +11,9 @@ class LLM:
     def __init__(self):
         self.client = OpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
         self.llm = OpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
-        LOG.add("daily_progress/llm_logs.log", rotation="1 MB", level="DEBUG")
+        with open("prompt/prompt_github_sentinel.txt", "w", encoding="utf-8") as file:
+            self.system_prompt = file.read()
+        LOG.add("logs/llm_logs.log", rotation="1 MB", level="DEBUG")
 
     def generate_daily_report(self, markdown_content, dry_run=False):
         prompt = f"以下是项目的最新进展，根据功能合并同类项，形成一份简报，至少包含：1）新增功能；2）主要改进；3）修复问题；:\n\n{markdown_content}, 最后以中文的形式输出"
@@ -43,19 +45,7 @@ class LLM:
             # 初始化总结模型
             summary_template = PromptTemplate(
                 input_variables=["markdown_content"],
-                template="""Initial Task: You need to create a brief report based on the provided project progress 
-                information. Analyze the Progress: First, carefully read all the latest updates on the project and 
-                understand the specific changes for each feature. Categorize and Organize: New Features: Group all 
-                newly added modules or features into one category. Major Improvements: Identify and organize the 
-                parts where significant optimizations or enhancements were made to existing features. Bug Fixes: 
-                Identify and summarize the defects or issues that have been fixed. Merge Similar Items: For similar 
-                or related features, try to combine them to ensure the report is concise and clear. Generate the 
-                Report: Write the report following this structure: New Features: List all the newly added features. 
-                Major Improvements: Summarize the significant enhancements or optimizations made to existing 
-                features. Bug Fixes: Outline the issues or defects that have been resolved. Review the Report: Ensure 
-                that the report covers all the important information and that the content is accurate. Here is the 
-                content: {markdown_content}"""
-
+                template= self.system_prompt
             )
 
             summary_chain = LLMChain(llm=self.llm, prompt=summary_template, output_key="summary", verbose=True)
