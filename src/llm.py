@@ -39,11 +39,23 @@ class LLM:
             raise
 
     def generate_daily_report_with_langchain(self, markdown_content):
-        try :
+        try:
             # 初始化总结模型
             summary_template = PromptTemplate(
                 input_variables=["markdown_content"],
-                template="以下是项目的最新进展，根据功能合并同类项，形成一份简报，至少包含：1）新增功能；2）主要改进；3）修复问题；\n\n: {markdown_content}"
+                template="""Initial Task: You need to create a brief report based on the provided project progress 
+                information. Analyze the Progress: First, carefully read all the latest updates on the project and 
+                understand the specific changes for each feature. Categorize and Organize: New Features: Group all 
+                newly added modules or features into one category. Major Improvements: Identify and organize the 
+                parts where significant optimizations or enhancements were made to existing features. Bug Fixes: 
+                Identify and summarize the defects or issues that have been fixed. Merge Similar Items: For similar 
+                or related features, try to combine them to ensure the report is concise and clear. Generate the 
+                Report: Write the report following this structure: New Features: List all the newly added features. 
+                Major Improvements: Summarize the significant enhancements or optimizations made to existing 
+                features. Bug Fixes: Outline the issues or defects that have been resolved. Review the Report: Ensure 
+                that the report covers all the important information and that the content is accurate. Here is the 
+                content: {markdown_content}"""
+
             )
 
             summary_chain = LLMChain(llm=self.llm, prompt=summary_template, output_key="summary", verbose=True)
@@ -53,7 +65,8 @@ class LLM:
                 template="Translate the following summary into Chinese: {summary}"
             )
 
-            translation_chain = LLMChain(llm=self.llm, prompt=translation_template, output_key="chinese_summary", verbose=True)
+            translation_chain = LLMChain(llm=self.llm, prompt=translation_template, output_key="chinese_summary",
+                                         verbose=True)
             # 创建顺序链
             chain = SequentialChain(
                 chains=[summary_chain, translation_chain],
