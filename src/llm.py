@@ -11,7 +11,7 @@ class LLM:
     def __init__(self):
         self.client = OpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
         self.llm = OpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
-        with open("prompt/prompt_github_sentinel.txt", "w", encoding="utf-8") as file:
+        with open("prompt/prompt_github_sentinel.txt", "r", encoding="utf-8") as file:
             self.system_prompt = file.read()
         LOG.add("logs/llm_logs.log", rotation="1 MB", level="DEBUG")
 
@@ -31,7 +31,8 @@ class LLM:
             response = self.client.chat.completions.create(
                 model="gpt-4o",
                 messages=[
-                    {"role": "user", "content": prompt}
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": markdown_content}
                 ]
             )
             LOG.debug("GPT response: {}", response)
@@ -45,7 +46,7 @@ class LLM:
             # 初始化总结模型
             summary_template = PromptTemplate(
                 input_variables=["markdown_content"],
-                template= self.system_prompt
+                template=self.system_prompt
             )
 
             summary_chain = LLMChain(llm=self.llm, prompt=summary_template, output_key="summary", verbose=True)

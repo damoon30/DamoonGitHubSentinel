@@ -15,14 +15,19 @@ subscription_manager = SubscriptionManager(config.subscriptions_file)
 
 
 def export_progress_by_date_range(repo, days):
+    LOG.info(f"repo={repo}, days={days}")
     raw_file_path = github_client.export_progress_by_date_range(repo, days)
-    report, report_file_path = report_generator.generate_report_by_date_range(raw_file_path, days)
+
+    LOG.info(f"raw_file_path={raw_file_path}, days={days}")
+    report, report_file_path = report_generator.generate_report_by_date_range(raw_file_path)
 
     return report, report_file_path
+
 
 demo = gr.Interface(
     fn=export_progress_by_date_range,
     title="GitHubSentinel",
+    description="this is a very intelligence tool",
     inputs=[
         gr.Dropdown(
             subscription_manager.list_subscriptions(), label="订阅列表", info="已订阅GitHub项目"

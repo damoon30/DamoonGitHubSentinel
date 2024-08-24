@@ -60,11 +60,12 @@ class ReportGenerator:
 
         return report, report_file_path
 
-    def generate_report_by_date_range(self, markdown_file_path, days):
+    def generate_report_by_date_range(self, markdown_file_path):
         with open(markdown_file_path, 'r') as file:
             markdown_content = file.read()
 
-        report = self.llm.generate_daily_report_with_langchain(markdown_content)
+        LOG.info(f"markdown_content={markdown_content}")
+        report = self.llm.generate_daily_report(markdown_content)
 
         report_file_path = os.path.splitext(markdown_file_path)[0] + f"_report.md"
         with open(report_file_path, 'w+') as report_file:

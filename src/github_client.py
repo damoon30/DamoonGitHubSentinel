@@ -86,10 +86,10 @@ class GitHubClient:
         
         with open(file_path, 'w') as file:
             file.write(f"# Progress for {repo} ({since} to {today})\n\n")
-            file.write("\n## Issues Closed in the Last {days} Days\n")
+            file.write(f"\n## Issues Closed in the Last {days} Days\n")
             for issue in updates['issues']:
                 file.write(f"- {issue['title']} #{issue['number']}\n")
-            file.write("\n## Pull Requests Merged in the Last {days} Days\n")
+            file.write(f"\n## Pull Requests Merged in the Last {days} Days\n")
             for pr in updates['pull_requests']:
                 file.write(f"- {pr['title']} #{pr['number']}\n")
         
