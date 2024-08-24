@@ -50,7 +50,7 @@ class ReportGenerator:
             markdown_content = file.read()
 
         # report = self.llm.generate_daily_report(markdown_content)
-        report = self.llm.generate_daily_report_with_langchain(markdown_content)
+        report = self.llm.generate_daily_report(markdown_content)
 
         report_file_path = os.path.splitext(markdown_file_path)[0] + "_report.md"
         with open(report_file_path, 'w+') as report_file:
@@ -65,7 +65,7 @@ class ReportGenerator:
             markdown_content = file.read()
 
         LOG.info(f"markdown_content={markdown_content}")
-        report = self.llm.generate_daily_report(markdown_content)
+        report = self.llm.generate_report_chat_langchain(markdown_content)
 
         report_file_path = os.path.splitext(markdown_file_path)[0] + f"_report.md"
         with open(report_file_path, 'w+') as report_file:

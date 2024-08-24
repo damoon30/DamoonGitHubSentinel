@@ -1,7 +1,5 @@
 [
     "DjangoPeng/openai-quickstart",
-    "ollama/ollama",
     "langchain-ai/langchain",
-    "dammon30/DamoonGithubSentinel",
-    "ipipman/rpc-man"
+    "dammon30/DamoonGithubSentinel"
 ]
