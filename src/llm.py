@@ -5,7 +5,7 @@ from logger import LOG
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain.chains import LLMChain, SequentialChain
 from openai import OpenAI
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, AIMessage, SystemMessage
 
 
@@ -16,12 +16,14 @@ class LLM:
         self.chat = ChatOpenAI(api_key=os.environ['OPENAI_API_KEY'], base_url=os.environ['OPENAI_API_BASE'])
         with open("prompt/prompt_github_sentinel.txt", "r", encoding="utf-8") as file:
             self.system_prompt = file.read()
+        with open("prompt/prompt_hn.txt", "r", encoding="utf-8") as file:
+            self.system_prompt_hn = file.read()
         LOG.add("logs/llm_logs.log", rotation="1 MB", level="DEBUG")
 
     def generate_daily_report(self, markdown_content):
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": self.system_prompt},
                     {"role": "user", "content": markdown_content}
@@ -80,4 +82,37 @@ class LLM:
             return response.content
         except Exception as e:
             LOG.error("langchain error", e)
+            raise
+
+    def generate_hn_report(self, markdown_content):
+        try:
+            # 初始化总结模型
+            # 创建 ChatPromptTemplate
+            template = ChatPromptTemplate([
+                ("system",
+                 f"You are a helpful AI bot. Your name is Carl. follow the rules to answer {self.system_prompt_hn}"),
+                ("human", "{user_input}"),
+            ])
+
+            chain = template | self.chat
+            response = chain.invoke(markdown_content)
+            LOG.info(response)
+            return response.content
+        except Exception as e:
+            LOG.error("langchain error", e)
+            raise
+
+    def generate_hn_report_client(self, markdown_content):
+        try:
+            response = self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": self.system_prompt_hn},
+                    {"role": "user", "content": markdown_content}
+                ]
+            )
+            LOG.info("GPT response: {}", response)
+            return response.choices[0].message.content
+        except Exception as e:
+            LOG.error("An error occurred while generating the report: {}", e)
             raise

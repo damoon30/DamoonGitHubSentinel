@@ -1,5 +1,5 @@
 [
     "DjangoPeng/openai-quickstart",
     "langchain-ai/langchain",
-    "dammon30/DamoonGithubSentinel"
+    "ollama/ollama"
 ]

@@ -7,3 +7,5 @@ langchain-core~=0.2.33
 langchain-community
 openai~=1.42.0
 config~=0.5.1
+beautifulsoup4~=4.12.3
+django-scheduler~=0.10.1

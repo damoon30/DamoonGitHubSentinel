@@ -9,6 +9,7 @@ class ReportGenerator:
 
     def export_daily_progress(self, repo, updates):
         repo_dir = os.path.join('daily_progress', repo.replace("/", "_"))
+        print(f"repo:{repo}")
         os.makedirs(repo_dir, exist_ok=True)
 
         file_path = os.path.join(repo_dir, f'{date.today()}.md')
@@ -74,3 +75,19 @@ class ReportGenerator:
         LOG.info(f"Generated report saved to {report_file_path}")
 
         return report, report_file_path
+
+    def generate_hacker_news(self, content_list: list) -> str:
+        LOG.info(f"markdown_content={content_list}")
+        report = ''
+        for content in content_list:
+            title = content[0]
+            link = content[1]
+            report += 'title:' + title + '\n' + 'link:' + link + ''
+            report += '--------------\n'
+
+        print(report)
+
+        result = self.llm.generate_hn_report_client(report)
+        LOG.info(f"Generated report {report}")
+
+        return result
