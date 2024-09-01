@@ -9,7 +9,7 @@ from logger import LOG
 
 config = Config()
 github_client = GitHubClient(config.github_token)
-llm = LLM()
+llm = LLM(config.llm_config)
 report_generator = ReportGenerator(llm)
 subscription_manager = SubscriptionManager(config.subscriptions_file)
 

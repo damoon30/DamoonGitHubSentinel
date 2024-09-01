@@ -1,9 +1,27 @@
 {
     "github_token": "xx",
     "notification_settings": {
-        "email": "17343100344@163.com",
-        "slack_webhook_url": "your_slack_webhook_url"
+        "mail_host": "smtp.qq.com",
+        "mail_user": "damoon30@qq.com",
+        "mail_pass": "xxx",
+        "mail_port": 465
     },
     "subscriptions_file": "subscriptions.json",
-    "update_interval": 86400
+    "update_interval": 86400,
+    "llm_config_settings": {
+        "use_model_name": "llama3.1",
+        "model_map": {
+             "gpt-4o": {
+                "model_name": "gpt-4o",
+                "open_base_url": "",
+                "open_key": ""
+            },
+            "llama3.1": {
+                "model_name": "llama3.1",
+                "open_base_url": "http://localhost:11434/api/chat"
+            }
+        }
+
+
+    }
 }

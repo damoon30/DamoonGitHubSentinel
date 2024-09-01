@@ -38,10 +38,12 @@ class Config:
         LOG.info(f"目录{os.getcwd()}")
         with open('config/config.json', 'r') as f:
             config = json.load(f)
+            print(f"config is {config}")
             self.github_token = config.get('github_token')
             self.notification_settings = config.get('notification_settings')
             self.subscriptions_file = config.get('subscriptions_file')
             self.update_interval = config.get('update_interval', 24 * 60 * 60)  # Default to 24 hours
+            self.llm_config = config.get('llm_config_settings')  # Default to 24 hours
 
     import os
 

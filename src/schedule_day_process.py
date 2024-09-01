@@ -26,8 +26,9 @@ def main():
     每周特定时间执行：schedule.every().week.at("monday").do(job)
     :return:
     """
-    notifier = Notifier()
-    llm = LLM()
+    config = Config()
+    notifier = Notifier(config.notification_settings)
+    llm = LLM(config.llm_config)
     report_generator = ReportGenerator(llm)
 
     scheduler = SchedulerHackerNews(
@@ -37,7 +38,7 @@ def main():
     )
 
     job = functools.partial(run_scheduler, scheduler)
-    schedule.every().day.at("15:16").do(job)
+    schedule.every().day.at("18:43").do(job)
 
     # 持续运行调度
     while True:

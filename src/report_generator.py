@@ -61,6 +61,21 @@ class ReportGenerator:
 
         return report, report_file_path
 
+    def generate_daily_report_ollama(self, markdown_file_path):
+        with open(markdown_file_path, 'r') as file:
+            markdown_content = file.read()
+
+        # report = self.llm.generate_daily_report(markdown_content)
+        report = self.llm.generate_daily_report_ollama(markdown_content)
+
+        report_file_path = os.path.splitext(markdown_file_path)[0] + "_report.md"
+        with open(report_file_path, 'w+') as report_file:
+            report_file.write(report)
+
+        LOG.info(f"Generated report saved to {report_file_path}")
+
+        return report, report_file_path
+
     def generate_report_by_date_range(self, markdown_file_path):
         with open(markdown_file_path, 'r') as file:
             markdown_content = file.read()

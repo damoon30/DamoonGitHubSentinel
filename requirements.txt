@@ -9,3 +9,5 @@ openai~=1.42.0
 config~=0.5.1
 beautifulsoup4~=4.12.3
 django-scheduler~=0.10.1
+markdown2~=2.5.0
+schedule~=1.2.2

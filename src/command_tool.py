@@ -13,7 +13,7 @@ def main():
     config = Config()
     github_client = GitHubClient(config.github_token)
     notifier = Notifier(config.notification_settings)
-    llm = LLM()
+    llm = LLM(config.llm_config)
     report_generator = ReportGenerator(llm)
     subscription_manager = SubscriptionManager(config.subscriptions_file)
     command_handler = CommandHandler(github_client, subscription_manager, report_generator)

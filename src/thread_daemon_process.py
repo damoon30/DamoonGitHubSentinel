@@ -18,8 +18,9 @@ def run_scheduler(scheduler):
 
 
 def main():
-    notifier = Notifier()
-    llm = LLM()
+    config = Config()
+    notifier = Notifier(config.notification_settings)
+    llm = LLM(config.llm_config)
     report_generator = ReportGenerator(llm)
 
     scheduler = SchedulerHackerNews(
@@ -45,9 +46,9 @@ def main():
 
     # 主线程的任务
     try:
-        for i in range(30):
+        for i in range(1000):
             print(f"主线程运行: {i}")
-            time.sleep(1)  # 每 1 秒打印一次
+            time.sleep(10)  # 每 1 秒打印一次
     except KeyboardInterrupt:
         print("主线程被中断")
 
