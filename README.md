@@ -90,3 +90,10 @@ python src/gradio_server.py
 
 - 这将在您的机器上启动一个 Web 服务器，允许您通过用户友好的界面管理订阅和生成报告。
 - 默认情况下，Gradio 服务器将可在 `http://localhost:7860` 访问，但如果需要，您可以公开共享它。
+
+### 4. ollama模型本地部署
+   模型ui参考项目：[open-ui](https://github.com/open-webui/open-webui)
+
+   参阅github：[llama部署](https://github.com/ollama/ollama)
+
+   API介绍：[llama3的api介绍](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion)
